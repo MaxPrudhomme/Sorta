@@ -1,0 +1,13 @@
+# Xcode
+build/
+*.xcuserdata
+*.xcuserstate
+*.swp
+
+# Node
+node_modules/
+dist/
+
+# Other
+.DS_Store
+.env
