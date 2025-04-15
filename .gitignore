@@ -3,6 +3,7 @@ build/
 *.xcuserdata
 *.xcuserstate
 *.swp
+.build
 
 # Node
 node_modules/
@@ -11,3 +12,6 @@ dist/
 # Other
 .DS_Store
 .env
+
+#Large model
+app/Models/**

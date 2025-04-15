@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AB3A0A782DADBE19003EBDDB /* SortaHelper.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = AB3A0A682DADBAFE003EBDDB /* SortaHelper.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		ABF0A5FF2DAEA3D500CB0568 /* LLM in Frameworks */ = {isa = PBXBuildFile; productRef = ABF0A5FE2DAEA3D500CB0568 /* LLM */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABF0A5FF2DAEA3D500CB0568 /* LLM in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -165,6 +167,7 @@
 			);
 			name = SortaHelper;
 			packageProductDependencies = (
+				ABF0A5FE2DAEA3D500CB0568 /* LLM */,
 			);
 			productName = SortaHelper;
 			productReference = AB3A0A682DADBAFE003EBDDB /* SortaHelper.app */;
@@ -274,6 +277,9 @@
 			);
 			mainGroup = ABC439602DADA8C8006674AA;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				ABF0A5FD2DAEA3D500CB0568 /* XCRemoteSwiftPackageReference "LLM" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = ABC4396A2DADA8C8006674AA /* Products */;
 			projectDirPath = "";
@@ -714,6 +720,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		ABF0A5FD2DAEA3D500CB0568 /* XCRemoteSwiftPackageReference "LLM" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/eastriverlee/LLM.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		ABF0A5FE2DAEA3D500CB0568 /* LLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ABF0A5FD2DAEA3D500CB0568 /* XCRemoteSwiftPackageReference "LLM" */;
+			productName = LLM;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = ABC439612DADA8C8006674AA /* Project object */;
 }

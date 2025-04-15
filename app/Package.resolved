@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "LLM",
+        "repositoryURL": "https://github.com/eastriverlee/LLM.swift",
+        "state": {
+          "branch": "main",
+          "revision": "e62b90f067ae89d2361c2dccae4ffa448a7b1d54",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
