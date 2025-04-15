@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		AB3A0A782DADBE19003EBDDB /* SortaHelper.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = AB3A0A682DADBAFE003EBDDB /* SortaHelper.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		ABC4397A2DADA8C9006674AA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -23,13 +27,53 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		AB3A0A762DADBDB5003EBDDB /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LoginItems;
+			dstSubfolderSpec = 1;
+			files = (
+				AB3A0A782DADBE19003EBDDB /* SortaHelper.app in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		AB3A0A682DADBAFE003EBDDB /* SortaHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SortaHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABC439692DADA8C8006674AA /* Sorta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sorta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABC439792DADA8C9006674AA /* SortaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SortaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABC439832DADA8C9006674AA /* SortaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SortaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		AB3A0A752DADBCE9003EBDDB /* Exceptions for "SortaHelper" folder in "SortaHelper" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = AB3A0A672DADBAFE003EBDDB /* SortaHelper */;
+		};
+		ABB384D62DAE609600F566CB /* Exceptions for "SortaHelper" folder in "Sorta" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Daemon/FileOrganizer.swift,
+			);
+			target = ABC439682DADA8C8006674AA /* Sorta */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		AB3A0A692DADBAFE003EBDDB /* SortaHelper */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				ABB384D62DAE609600F566CB /* Exceptions for "SortaHelper" folder in "Sorta" target */,
+				AB3A0A752DADBCE9003EBDDB /* Exceptions for "SortaHelper" folder in "SortaHelper" target */,
+			);
+			path = SortaHelper;
+			sourceTree = "<group>";
+		};
 		ABC4396B2DADA8C8006674AA /* Sorta */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Sorta;
@@ -48,6 +92,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		AB3A0A652DADBAFE003EBDDB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ABC439662DADA8C8006674AA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -78,6 +129,7 @@
 				ABC4396B2DADA8C8006674AA /* Sorta */,
 				ABC4397C2DADA8C9006674AA /* SortaTests */,
 				ABC439862DADA8C9006674AA /* SortaUITests */,
+				AB3A0A692DADBAFE003EBDDB /* SortaHelper */,
 				ABC4396A2DADA8C8006674AA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,6 +140,7 @@
 				ABC439692DADA8C8006674AA /* Sorta.app */,
 				ABC439792DADA8C9006674AA /* SortaTests.xctest */,
 				ABC439832DADA8C9006674AA /* SortaUITests.xctest */,
+				AB3A0A682DADBAFE003EBDDB /* SortaHelper.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,6 +148,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		AB3A0A672DADBAFE003EBDDB /* SortaHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AB3A0A712DADBAFF003EBDDB /* Build configuration list for PBXNativeTarget "SortaHelper" */;
+			buildPhases = (
+				AB3A0A642DADBAFE003EBDDB /* Sources */,
+				AB3A0A652DADBAFE003EBDDB /* Frameworks */,
+				AB3A0A662DADBAFE003EBDDB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				AB3A0A692DADBAFE003EBDDB /* SortaHelper */,
+			);
+			name = SortaHelper;
+			packageProductDependencies = (
+			);
+			productName = SortaHelper;
+			productReference = AB3A0A682DADBAFE003EBDDB /* SortaHelper.app */;
+			productType = "com.apple.product-type.application";
+		};
 		ABC439682DADA8C8006674AA /* Sorta */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = ABC4398D2DADA8C9006674AA /* Build configuration list for PBXNativeTarget "Sorta" */;
@@ -102,6 +177,7 @@
 				ABC439652DADA8C8006674AA /* Sources */,
 				ABC439662DADA8C8006674AA /* Frameworks */,
 				ABC439672DADA8C8006674AA /* Resources */,
+				AB3A0A762DADBDB5003EBDDB /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -173,6 +249,9 @@
 				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
+					AB3A0A672DADBAFE003EBDDB = {
+						CreatedOnToolsVersion = 16.3;
+					};
 					ABC439682DADA8C8006674AA = {
 						CreatedOnToolsVersion = 16.3;
 					};
@@ -201,6 +280,7 @@
 			projectRoot = "";
 			targets = (
 				ABC439682DADA8C8006674AA /* Sorta */,
+				AB3A0A672DADBAFE003EBDDB /* SortaHelper */,
 				ABC439782DADA8C9006674AA /* SortaTests */,
 				ABC439822DADA8C9006674AA /* SortaUITests */,
 			);
@@ -208,6 +288,13 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		AB3A0A662DADBAFE003EBDDB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ABC439672DADA8C8006674AA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -232,6 +319,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		AB3A0A642DADBAFE003EBDDB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ABC439652DADA8C8006674AA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -269,6 +363,64 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		AB3A0A722DADBAFF003EBDDB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SortaHelper/SortaHelper.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 74BX245RVN;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SortaHelper/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxprudhomme.SortaHelper;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		AB3A0A732DADBAFF003EBDDB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SortaHelper/SortaHelper.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 74BX245RVN;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SortaHelper/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxprudhomme.SortaHelper;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		ABC4398B2DADA8C9006674AA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -516,6 +668,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		AB3A0A712DADBAFF003EBDDB /* Build configuration list for PBXNativeTarget "SortaHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB3A0A722DADBAFF003EBDDB /* Debug */,
+				AB3A0A732DADBAFF003EBDDB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		ABC439642DADA8C8006674AA /* Build configuration list for PBXProject "Sorta" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
