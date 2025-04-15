@@ -17,11 +17,6 @@ struct SortaApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(appSettings)
-                .onAppear {
-                    if appSettings.startAtLogin {
-                        registerLoginItem()
-                    }
-                }
         }
         .windowStyle(.titleBar)
         .windowResizability(.contentSize)
