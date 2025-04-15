@@ -14,4 +14,4 @@ dist/
 .env
 
 #Large model
-app/Models/**
+app/SortaHelper/Models/**
