@@ -19,6 +19,17 @@ final class SortaDaemon: ObservableObject {
     init() {
         logger.info("SortaHelper daemon started")
         setupMonitoring()
+        setupShutdownListener()
+    }
+
+    private func setupShutdownListener() {
+        DistributedNotificationCenter.default().addObserver(
+            forName: Notification.Name("com.maxprudhomme.SortaHelper.shutdown"),
+            object: nil,
+            queue: .main
+        ) { _ in
+            exit(0)
+        }
     }
     
     private func setupMonitoring() {

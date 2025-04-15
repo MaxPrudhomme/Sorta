@@ -36,6 +36,10 @@ struct ContentView: View {
         .frame(minWidth: 500, minHeight: 400)
         .onAppear {
             checkHelperStatus()
+            startHelper()
+            if appSettings.startAtLogin {
+                try? SMAppService.loginItem(identifier: "com.maxprudhomme.SortaHelper").register()
+            }
         }
     }
     
@@ -85,7 +89,11 @@ struct ContentView: View {
             
             Spacer()
             
-            if !isHelperRunning {
+            if isHelperRunning {
+                Button("Stop Helper") {
+                    stopHelper()
+                }
+            } else {
                 Button("Start Helper") {
                     startHelper()
                 }
@@ -102,6 +110,20 @@ struct ContentView: View {
             
             Toggle("Start helper at login", isOn: $appSettings.startAtLogin)
                 .padding(.leading, 4)
+                .onChange(of: appSettings.startAtLogin) {
+                    do {
+                        let helper = SMAppService.loginItem(identifier: "com.maxprudhomme.SortaHelper")
+                        if appSettings.startAtLogin {
+                            try helper.register()
+                            print("Helper registered for login")
+                        } else {
+                            try helper.unregister()
+                            print("Helper unregistered from login")
+                        }
+                    } catch {
+                        print("Failed to update login item: \(error)")
+                    }
+                }
             
             Divider()
             
@@ -173,18 +195,30 @@ struct ContentView: View {
             print("Could not find helper app")
             return
         }
-        
-        do {
-            try NSWorkspace.shared.launchApplication(at: helperURL, 
-                                                  options: .withoutActivation,
-                                           configuration: [:])
-            
-            // Check status after a brief delay
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                checkHelperStatus()
+
+        let config = NSWorkspace.OpenConfiguration()
+        config.activates = false
+
+        NSWorkspace.shared.openApplication(at: helperURL, configuration: config) { app, error in
+            if let error = error {
+                print("Failed to launch helper: \(error.localizedDescription)")
+            } else {
+                // Check status after a brief delay
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    checkHelperStatus()
+                }
             }
-        } catch {
-            print("Failed to launch helper: \(error.localizedDescription)")
+        }
+    }
+    
+    private func stopHelper() {
+        DistributedNotificationCenter.default().post(
+            name: Notification.Name("com.maxprudhomme.SortaHelper.shutdown"),
+            object: nil
+        )
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            checkHelperStatus()
         }
     }
 }
