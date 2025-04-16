@@ -56,20 +56,12 @@
 			);
 			target = AB3A0A672DADBAFE003EBDDB /* SortaHelper */;
 		};
-		ABB384D62DAE609600F566CB /* Exceptions for "SortaHelper" folder in "Sorta" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Daemon/FileOrganizer.swift,
-			);
-			target = ABC439682DADA8C8006674AA /* Sorta */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AB3A0A692DADBAFE003EBDDB /* SortaHelper */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				ABB384D62DAE609600F566CB /* Exceptions for "SortaHelper" folder in "Sorta" target */,
 				AB3A0A752DADBCE9003EBDDB /* Exceptions for "SortaHelper" folder in "SortaHelper" target */,
 			);
 			path = SortaHelper;
