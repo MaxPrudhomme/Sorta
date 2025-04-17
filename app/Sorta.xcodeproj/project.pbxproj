@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AB3A0A782DADBE19003EBDDB /* SortaHelper.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = AB3A0A682DADBAFE003EBDDB /* SortaHelper.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		ABF0A5FF2DAEA3D500CB0568 /* LLM in Frameworks */ = {isa = PBXBuildFile; productRef = ABF0A5FE2DAEA3D500CB0568 /* LLM */; };
+		AB0D77E82DB171F200B28181 /* SortaDaemon in CopyFiles */ = {isa = PBXBuildFile; fileRef = AB25C9ED2DB165ED00AD16A3 /* SortaDaemon */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,42 +28,74 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		AB3A0A762DADBDB5003EBDDB /* CopyFiles */ = {
+		AB0D77E72DB171E100B28181 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = Contents/Library/LoginItems;
-			dstSubfolderSpec = 1;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 7;
 			files = (
-				AB3A0A782DADBE19003EBDDB /* SortaHelper.app in CopyFiles */,
+				AB0D77E82DB171F200B28181 /* SortaDaemon in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AB25C9EB2DB165ED00AD16A3 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		AB3A0A682DADBAFE003EBDDB /* SortaHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SortaHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB25C9ED2DB165ED00AD16A3 /* SortaDaemon */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SortaDaemon; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABC439692DADA8C8006674AA /* Sorta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sorta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABC439792DADA8C9006674AA /* SortaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SortaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABC439832DADA8C9006674AA /* SortaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SortaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		AB3A0A752DADBCE9003EBDDB /* Exceptions for "SortaHelper" folder in "SortaHelper" target */ = {
+		AB0D77E02DB16FFD00B28181 /* Exceptions for "SortaDaemon" folder in "Sorta" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				com.maxprudhomme.sortadaemon.plist,
 			);
-			target = AB3A0A672DADBAFE003EBDDB /* SortaHelper */;
+			target = ABC439682DADA8C8006674AA /* Sorta */;
+		};
+		AB0D77E62DB170E900B28181 /* Exceptions for "SortaDaemon" folder in "SortaDaemon" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				com.maxprudhomme.sortadaemon.plist,
+			);
+			target = AB25C9EC2DB165ED00AD16A3 /* SortaDaemon */;
+		};
+		AB3F1E5F2DB168E200746ECB /* Exceptions for "Shared" folder in "SortaDaemon" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				XPCProtocol.swift,
+			);
+			target = AB25C9EC2DB165ED00AD16A3 /* SortaDaemon */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		AB3A0A692DADBAFE003EBDDB /* SortaHelper */ = {
+		AB25C9EE2DB165ED00AD16A3 /* SortaDaemon */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				AB3A0A752DADBCE9003EBDDB /* Exceptions for "SortaHelper" folder in "SortaHelper" target */,
+				AB0D77E02DB16FFD00B28181 /* Exceptions for "SortaDaemon" folder in "Sorta" target */,
+				AB0D77E62DB170E900B28181 /* Exceptions for "SortaDaemon" folder in "SortaDaemon" target */,
 			);
-			path = SortaHelper;
+			path = SortaDaemon;
+			sourceTree = "<group>";
+		};
+		AB3F1E5A2DB167A900746ECB /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				AB3F1E5F2DB168E200746ECB /* Exceptions for "Shared" folder in "SortaDaemon" target */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		ABC4396B2DADA8C8006674AA /* Sorta */ = {
@@ -85,11 +116,10 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		AB3A0A652DADBAFE003EBDDB /* Frameworks */ = {
+		AB25C9EA2DB165ED00AD16A3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ABF0A5FF2DAEA3D500CB0568 /* LLM in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,10 +150,11 @@
 		ABC439602DADA8C8006674AA = {
 			isa = PBXGroup;
 			children = (
+				AB3F1E5A2DB167A900746ECB /* Shared */,
 				ABC4396B2DADA8C8006674AA /* Sorta */,
 				ABC4397C2DADA8C9006674AA /* SortaTests */,
 				ABC439862DADA8C9006674AA /* SortaUITests */,
-				AB3A0A692DADBAFE003EBDDB /* SortaHelper */,
+				AB25C9EE2DB165ED00AD16A3 /* SortaDaemon */,
 				ABC4396A2DADA8C8006674AA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -134,7 +165,7 @@
 				ABC439692DADA8C8006674AA /* Sorta.app */,
 				ABC439792DADA8C9006674AA /* SortaTests.xctest */,
 				ABC439832DADA8C9006674AA /* SortaUITests.xctest */,
-				AB3A0A682DADBAFE003EBDDB /* SortaHelper.app */,
+				AB25C9ED2DB165ED00AD16A3 /* SortaDaemon */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -142,28 +173,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AB3A0A672DADBAFE003EBDDB /* SortaHelper */ = {
+		AB25C9EC2DB165ED00AD16A3 /* SortaDaemon */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AB3A0A712DADBAFF003EBDDB /* Build configuration list for PBXNativeTarget "SortaHelper" */;
+			buildConfigurationList = AB25C9F12DB165ED00AD16A3 /* Build configuration list for PBXNativeTarget "SortaDaemon" */;
 			buildPhases = (
-				AB3A0A642DADBAFE003EBDDB /* Sources */,
-				AB3A0A652DADBAFE003EBDDB /* Frameworks */,
-				AB3A0A662DADBAFE003EBDDB /* Resources */,
+				AB25C9E92DB165ED00AD16A3 /* Sources */,
+				AB25C9EA2DB165ED00AD16A3 /* Frameworks */,
+				AB0D77E12DB1700E00B28181 /* Resources */,
+				AB25C9EB2DB165ED00AD16A3 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				AB3A0A692DADBAFE003EBDDB /* SortaHelper */,
+				AB25C9EE2DB165ED00AD16A3 /* SortaDaemon */,
 			);
-			name = SortaHelper;
+			name = SortaDaemon;
 			packageProductDependencies = (
-				ABF0A5FE2DAEA3D500CB0568 /* LLM */,
 			);
-			productName = SortaHelper;
-			productReference = AB3A0A682DADBAFE003EBDDB /* SortaHelper.app */;
-			productType = "com.apple.product-type.application";
+			productName = SortaDaemon;
+			productReference = AB25C9ED2DB165ED00AD16A3 /* SortaDaemon */;
+			productType = "com.apple.product-type.tool";
 		};
 		ABC439682DADA8C8006674AA /* Sorta */ = {
 			isa = PBXNativeTarget;
@@ -172,13 +203,14 @@
 				ABC439652DADA8C8006674AA /* Sources */,
 				ABC439662DADA8C8006674AA /* Frameworks */,
 				ABC439672DADA8C8006674AA /* Resources */,
-				AB3A0A762DADBDB5003EBDDB /* CopyFiles */,
+				AB0D77E72DB171E100B28181 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				AB3F1E5A2DB167A900746ECB /* Shared */,
 				ABC4396B2DADA8C8006674AA /* Sorta */,
 			);
 			name = Sorta;
@@ -244,7 +276,7 @@
 				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
-					AB3A0A672DADBAFE003EBDDB = {
+					AB25C9EC2DB165ED00AD16A3 = {
 						CreatedOnToolsVersion = 16.3;
 					};
 					ABC439682DADA8C8006674AA = {
@@ -278,7 +310,7 @@
 			projectRoot = "";
 			targets = (
 				ABC439682DADA8C8006674AA /* Sorta */,
-				AB3A0A672DADBAFE003EBDDB /* SortaHelper */,
+				AB25C9EC2DB165ED00AD16A3 /* SortaDaemon */,
 				ABC439782DADA8C9006674AA /* SortaTests */,
 				ABC439822DADA8C9006674AA /* SortaUITests */,
 			);
@@ -286,7 +318,7 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		AB3A0A662DADBAFE003EBDDB /* Resources */ = {
+		AB0D77E12DB1700E00B28181 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -317,7 +349,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		AB3A0A642DADBAFE003EBDDB /* Sources */ = {
+		AB25C9E92DB165ED00AD16A3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -361,60 +393,24 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		AB3A0A722DADBAFF003EBDDB /* Debug */ = {
+		AB25C9F22DB165ED00AD16A3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = SortaHelper/SortaHelper.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 74BX245RVN;
 				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SortaHelper/Info.plist;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.maxprudhomme.SortaHelper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				REGISTER_APP_GROUPS = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
-		AB3A0A732DADBAFF003EBDDB /* Release */ = {
+		AB25C9F32DB165ED00AD16A3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = SortaHelper/SortaHelper.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 74BX245RVN;
 				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SortaHelper/Info.plist;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.maxprudhomme.SortaHelper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				REGISTER_APP_GROUPS = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -666,11 +662,11 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AB3A0A712DADBAFF003EBDDB /* Build configuration list for PBXNativeTarget "SortaHelper" */ = {
+		AB25C9F12DB165ED00AD16A3 /* Build configuration list for PBXNativeTarget "SortaDaemon" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AB3A0A722DADBAFF003EBDDB /* Debug */,
-				AB3A0A732DADBAFF003EBDDB /* Release */,
+				AB25C9F22DB165ED00AD16A3 /* Debug */,
+				AB25C9F32DB165ED00AD16A3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -723,14 +719,6 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		ABF0A5FE2DAEA3D500CB0568 /* LLM */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = ABF0A5FD2DAEA3D500CB0568 /* XCRemoteSwiftPackageReference "LLM" */;
-			productName = LLM;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = ABC439612DADA8C8006674AA /* Project object */;
 }

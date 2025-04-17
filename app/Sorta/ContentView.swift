@@ -1,54 +1,59 @@
+//
+//  ContentView.swift
+//  Sorta
+//
+//  Created by Max PRUDHOMME on 14/04/2025.
+//
+
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject private var appSettings: AppSettings
-    @State private var selectedView: SelectedView? = nil
-    @State private var recentFiles: [String] = []
-    
-    var body: some View {
-        NavigationSplitView {
-            List(selection: $selectedView) {
-                Section(header: Text("Recent Files")) {
-                    ForEach(recentFiles, id: \.self) { file in
-                        NavigationLink(value: SelectedView.file(URL(string: file)!)) {
-                            Text(file)
-                        }
-                    }
-                }
+    @StateObject private var vm = ViewModel()
 
-                Section {
-                    NavigationLink(value: SelectedView.settings) {
-                        Label("Settings", systemImage: "gear")
-                    }
-                }
+    var body: some View {
+        VStack(spacing: 20) {
+            Button(action: { Task { await vm.toggleDaemon() } }) {
+                Text(vm.isRunning ? "Stop Daemon" : "Start Daemon")
             }
-        } detail: {
-            switch selectedView {
-                case .settings:
-                    SettingsView()
-                    .navigationTitle("Settings")
-                case .file(let fileURL):
-                    Text("You selected file: \(fileURL.lastPathComponent)")
-                        .font(.headline)
-                        .padding()
-                        .navigationTitle(fileURL.lastPathComponent)
-                case .none:
-                    Text("Select a section")
-                        .font(.title)
-                        .foregroundColor(.gray)
-                        .navigationTitle("Sorta")
+            .disabled(vm.isBusy)
+
+            if let error = vm.lastError {
+                Text("Error: \(error.localizedDescription)")
+                .foregroundColor(.red)
             }
         }
-        .navigationSplitViewStyle(.balanced)
-    }
-        
-    enum SelectedView: Hashable {
-        case file(URL)
-        case settings
+        .padding()
+        .onAppear { Task { await vm.refresh() } }
     }
 }
 
-#Preview {
-    ContentView()
-        .environmentObject(AppSettings())
+extension ContentView {
+    @MainActor
+    class ViewModel: ObservableObject {
+        @Published private(set) var isRunning = false
+        @Published private(set) var isBusy = false
+        @Published var lastError: Error?
+
+        let manager = DaemonManager()
+
+        func refresh() async {
+            isRunning = await manager.isRunning()
+        }
+
+        func toggleDaemon() async {
+            isBusy = true
+            lastError = nil
+            do {
+                if await manager.isRunning() {
+                    try await manager.stopAndUninstall()
+                } else {
+                    try await manager.installAndStart()
+                }
+                isRunning = await manager.isRunning()
+            } catch {
+                lastError = error
+            }
+            isBusy = false
+        }
+    }
 }
