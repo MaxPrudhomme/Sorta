@@ -7,7 +7,7 @@
   <string>com.maxprudhomme.sortadaemon</string>
   <key>ProgramArguments</key>
   <array>
-    <string>$(HOME)/Library/Application Support/SortaApp/SortaDaemonCLI</string>
+    <string>$(HOME)/Library/Application Support/SortaApp/SortaDaemon</string>
   </array>
   <key>RunAtLoad</key><true/>
   <key>KeepAlive</key><true/>

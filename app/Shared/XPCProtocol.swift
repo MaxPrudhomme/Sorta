@@ -9,5 +9,6 @@ import Foundation
 
 @objc public protocol XPCProtocol {
 
-  func process(prompt: String, withReply reply: @escaping (String?, Error?) -> Void)
+    func ping(withReply reply: @escaping (String) -> Void)
+    func generateResponse(prompt: String, withReply reply: @escaping (String?, Error?) -> Void)
 }

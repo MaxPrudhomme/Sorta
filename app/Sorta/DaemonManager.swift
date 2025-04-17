@@ -72,7 +72,6 @@ actor DaemonManager {
         }
     }
 
-
     func stopAndUninstall() async throws {
         do {
             let uid = getuid()

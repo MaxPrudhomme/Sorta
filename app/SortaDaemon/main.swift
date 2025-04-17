@@ -8,20 +8,30 @@
 import Foundation
 
 class HelperDelegate: NSObject, NSXPCListenerDelegate, XPCProtocol {
-  func listener(_ listener: NSXPCListener,
-                shouldAcceptNewConnection conn: NSXPCConnection) -> Bool {
-    // Export our protocol on the new connection:
-    conn.exportedInterface =
-      NSXPCInterface(with: XPCProtocol.self)
-    conn.exportedObject = self
-    conn.resume()
-    return true
-  }
+//    private let model = Model()
+    
+    func listener(_ listener: NSXPCListener, shouldAcceptNewConnection conn: NSXPCConnection) -> Bool {
+        conn.exportedInterface = NSXPCInterface(with: XPCProtocol.self)
+        conn.exportedObject = self
+        conn.resume()
+        return true
+    }
 
-  func process(prompt: String, withReply reply: @escaping (String?, Error?) -> Void) {
-    let out = prompt + " 😊"
-    reply(out, nil)
-  }
+    func ping(withReply reply: @escaping (String) -> Void) {
+        reply("Pong")
+    }
+    
+    func generateResponse(prompt: String, withReply reply: @escaping (String?, Error?) -> Void) {
+//        Task {
+//            do {
+//                let response = try await model.generateResponse(to: prompt, system: "You are a helpful assistant that answer truthfully and accurately to user queries.")
+//                reply(response, nil)
+//            } catch {
+//                reply(nil, error)
+//            }
+//        }
+        reply("This is a test response", nil)
+    }
 }
 
 let listener = NSXPCListener(machServiceName: "com.maxprudhomme.sortadaemon")

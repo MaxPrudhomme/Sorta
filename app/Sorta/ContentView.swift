@@ -12,6 +12,7 @@ struct ContentView: View {
     @State private var recentFiles: [String] = []
     
     let manager = DaemonManager()
+    let client = DaemonClient()
 
     var body: some View {
         NavigationSplitView {
@@ -50,7 +51,7 @@ struct ContentView: View {
                 Text("Dashboard View")
                     .navigationTitle("Dashboard")
             case .chat:
-                Text("Chat View")
+                ChatView(vm: ChatViewModel(client: client))
                     .navigationTitle("Chat")
             case .file(let fileURL):
                 Text("You selected file: \(fileURL.lastPathComponent)")
