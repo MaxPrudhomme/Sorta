@@ -8,52 +8,64 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var vm = ViewModel()
+    @State private var selectedView: SelectedView = .dashboard
+    @State private var recentFiles: [String] = []
+    
+    let manager = DaemonManager()
 
     var body: some View {
-        VStack(spacing: 20) {
-            Button(action: { Task { await vm.toggleDaemon() } }) {
-                Text(vm.isRunning ? "Stop Daemon" : "Start Daemon")
-            }
-            .disabled(vm.isBusy)
-
-            if let error = vm.lastError {
-                Text("Error: \(error.localizedDescription)")
-                .foregroundColor(.red)
-            }
-        }
-        .padding()
-        .onAppear { Task { await vm.refresh() } }
-    }
-}
-
-extension ContentView {
-    @MainActor
-    class ViewModel: ObservableObject {
-        @Published private(set) var isRunning = false
-        @Published private(set) var isBusy = false
-        @Published var lastError: Error?
-
-        let manager = DaemonManager()
-
-        func refresh() async {
-            isRunning = await manager.isRunning()
-        }
-
-        func toggleDaemon() async {
-            isBusy = true
-            lastError = nil
-            do {
-                if await manager.isRunning() {
-                    try await manager.stopAndUninstall()
-                } else {
-                    try await manager.installAndStart()
+        NavigationSplitView {
+            List(selection: $selectedView) {
+                Section(header: Text("Workspace")) {
+                    NavigationLink(value: SelectedView.dashboard) {
+                        Label("Dashboard", systemImage: "rectangle.3.group")
+                    }
+                    NavigationLink(value: SelectedView.chat) {
+                        Label("Chat", systemImage: "brain")
+                    }
+                    NavigationLink(value: SelectedView.settings) {
+                        Label("Settings", systemImage: "gear")
+                    }
                 }
-                isRunning = await manager.isRunning()
-            } catch {
-                lastError = error
+
+                Section(header: Text("Recent Files")) {
+                    if recentFiles.isEmpty {
+                        Text("No recent items")
+                            .foregroundColor(.secondary)
+                    } else {
+                        ForEach(recentFiles, id: \.self) { file in
+                            NavigationLink(value: SelectedView.file(URL(string: file)!)) {
+                                Text(file)
+                            }
+                        }
+                    }
+                }
             }
-            isBusy = false
+        } detail: {
+            switch selectedView {
+            case .settings:
+                SettingsView(vm: SettingsViewModel(manager: manager))
+                    .navigationTitle("Settings")
+            case .dashboard:
+                Text("Dashboard View")
+                    .navigationTitle("Dashboard")
+            case .chat:
+                Text("Chat View")
+                    .navigationTitle("Chat")
+            case .file(let fileURL):
+                Text("You selected file: \(fileURL.lastPathComponent)")
+                    .font(.headline)
+                    .padding()
+                    .navigationTitle(fileURL.lastPathComponent)
+            }
         }
+        .navigationSplitViewStyle(.balanced)
+    }
+    
+    enum SelectedView: Hashable {
+        case dashboard
+        case settings
+        case chat
+        case file(URL)
     }
 }

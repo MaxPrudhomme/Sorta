@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AB0D77E82DB171F200B28181 /* SortaDaemon in CopyFiles */ = {isa = PBXBuildFile; fileRef = AB25C9ED2DB165ED00AD16A3 /* SortaDaemon */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AB0D77F12DB17E0F00B28181 /* LLM in Frameworks */ = {isa = PBXBuildFile; productRef = AB0D77F02DB17E0F00B28181 /* LLM */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,6 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB0D77F12DB17E0F00B28181 /* LLM in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,6 +149,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AB0D77ED2DB17DC100B28181 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		ABC439602DADA8C8006674AA = {
 			isa = PBXGroup;
 			children = (
@@ -155,6 +164,7 @@
 				ABC4397C2DADA8C9006674AA /* SortaTests */,
 				ABC439862DADA8C9006674AA /* SortaUITests */,
 				AB25C9EE2DB165ED00AD16A3 /* SortaDaemon */,
+				AB0D77ED2DB17DC100B28181 /* Frameworks */,
 				ABC4396A2DADA8C8006674AA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -191,6 +201,7 @@
 			);
 			name = SortaDaemon;
 			packageProductDependencies = (
+				AB0D77F02DB17E0F00B28181 /* LLM */,
 			);
 			productName = SortaDaemon;
 			productReference = AB25C9ED2DB165ED00AD16A3 /* SortaDaemon */;
@@ -719,6 +730,14 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AB0D77F02DB17E0F00B28181 /* LLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ABF0A5FD2DAEA3D500CB0568 /* XCRemoteSwiftPackageReference "LLM" */;
+			productName = LLM;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = ABC439612DADA8C8006674AA /* Project object */;
 }
