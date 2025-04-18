@@ -7,10 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AB08F11E2DB1BD820070C1ED /* llama.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB08F1172DB1B7E90070C1ED /* llama.framework */; };
-		AB08F1212DB1BE580070C1ED /* llama.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB08F1172DB1B7E90070C1ED /* llama.framework */; };
-		AB08F1222DB1BE580070C1ED /* llama.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AB08F1172DB1B7E90070C1ED /* llama.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		AB0D77E82DB171F200B28181 /* SortaDaemon in Copy Files */ = {isa = PBXBuildFile; fileRef = AB25C9ED2DB165ED00AD16A3 /* SortaDaemon */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		AB0D77E82DB171F200B28181 /* SortaDaemon in Daemon Copy */ = {isa = PBXBuildFile; fileRef = AB25C9ED2DB165ED00AD16A3 /* SortaDaemon */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		ABDB59D52DB1CBFE00DE46F4 /* llama.framework in llama.framework Copy */ = {isa = PBXBuildFile; fileRef = AB08F1172DB1B7E90070C1ED /* llama.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,26 +29,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		AB08F1232DB1BE580070C1ED /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				AB08F1222DB1BE580070C1ED /* llama.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AB0D77E72DB171E100B28181 /* Copy Files */ = {
+		AB0D77E72DB171E100B28181 /* Daemon Copy */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				AB0D77E82DB171F200B28181 /* SortaDaemon in Copy Files */,
+				AB0D77E82DB171F200B28181 /* SortaDaemon in Daemon Copy */,
 			);
-			name = "Copy Files";
+			name = "Daemon Copy";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ABDB59D42DB1CBF000DE46F4 /* llama.framework Copy */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				ABDB59D52DB1CBFE00DE46F4 /* llama.framework in llama.framework Copy */,
+			);
+			name = "llama.framework Copy";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -151,7 +149,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB08F1212DB1BE580070C1ED /* llama.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,7 +156,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB08F11E2DB1BD820070C1ED /* llama.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,7 +219,6 @@
 				AB25C9E92DB165ED00AD16A3 /* Sources */,
 				AB25C9EA2DB165ED00AD16A3 /* Frameworks */,
 				AB0D77E12DB1700E00B28181 /* Resources */,
-				AB08F1232DB1BE580070C1ED /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -246,7 +241,8 @@
 				ABC439652DADA8C8006674AA /* Sources */,
 				ABC439662DADA8C8006674AA /* Frameworks */,
 				ABC439672DADA8C8006674AA /* Resources */,
-				AB0D77E72DB171E100B28181 /* Copy Files */,
+				AB0D77E72DB171E100B28181 /* Daemon Copy */,
+				ABDB59D42DB1CBF000DE46F4 /* llama.framework Copy */,
 			);
 			buildRules = (
 			);
@@ -448,7 +444,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -465,7 +461,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
