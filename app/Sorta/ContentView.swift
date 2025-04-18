@@ -10,12 +10,19 @@ import SwiftUI
 struct ContentView: View {
     @State private var selectedView: SelectedView = .dashboard
     @State private var recentFiles: [String] = []
-    
-    let manager = DaemonManager()
-    let client = DaemonClient()
 
+    let client = DaemonClient()
+    let manager = DaemonManager()
+    
     var body: some View {
-        NavigationSplitView {
+        // Call connect if the daemon is running
+        Task { @MainActor in
+            if await manager.isRunning {
+                client.connect()
+            }
+        }
+        
+        return NavigationSplitView {
             List(selection: $selectedView) {
                 Section(header: Text("Workspace")) {
                     NavigationLink(value: SelectedView.dashboard) {

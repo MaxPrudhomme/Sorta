@@ -34,6 +34,12 @@ class DaemonClient: ObservableObject {
         connectionState = .connected
     }
     
+    func disconnect() {
+        connection?.invalidate()
+        connection = nil
+        connectionState = .disconnected
+    }
+    
     func ping(withReply reply: @escaping (String) -> Void) {
         let proxy = connection?.remoteObjectProxyWithErrorHandler { error in print("XPC error:", error) } as? XPCProtocol
 

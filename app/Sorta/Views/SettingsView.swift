@@ -40,19 +40,19 @@ class SettingsViewModel: ObservableObject {
     }
 
     func refresh() async {
-        isRunning = await manager.isRunning()
+        isRunning = await manager.checkDaemonStatus()
     }
 
     func toggleDaemon() async {
         isBusy = true
         lastError = nil
         do {
-            if await manager.isRunning() {
+            if await manager.checkDaemonStatus() {
                 try await manager.stopAndUninstall()
             } else {
                 try await manager.installAndStart()
             }
-            isRunning = await manager.isRunning()
+            isRunning = await manager.checkDaemonStatus()
         } catch {
             lastError = error
         }

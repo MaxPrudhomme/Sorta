@@ -60,10 +60,12 @@ struct ChatView: View {
         }
     }
 }
+
 @MainActor
 class ChatViewModel: ObservableObject {
     private let client: DaemonClient
-
+    private var state: Bool = false
+    
     @Published var messages: [Message] = []
     @Published var inputText: String = ""
     @Published var isGeneratingResponse: Bool = false
@@ -71,20 +73,32 @@ class ChatViewModel: ObservableObject {
 
     init(client: DaemonClient) {
         self.client = client
-        self.client.connect()
     }
 
+    func checkConnection() {
+        client.connect()
+        client.ping { [weak self] result in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                if result == "pong" {
+                    self.state = true
+                } else {
+                    self.state = false
+                }
+            }
+        }
+    }
+    
     func sendMessage() {
         guard !inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            return // Don't send empty messages
+            return
         }
 
         let userMessageContent = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
         let userMessage = Message(sender: .user, content: userMessageContent)
 
-        // Add the user message immediately to the display
         messages.append(userMessage)
-        inputText = "" // Clear the input field
+        inputText = ""
 
         isGeneratingResponse = true
         errorMessage = nil // Clear any previous error

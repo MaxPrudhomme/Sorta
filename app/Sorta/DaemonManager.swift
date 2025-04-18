@@ -7,7 +7,7 @@
 
 import Foundation
 
-actor DaemonManager {
+actor DaemonManager: ObservableObject {
     enum Error: Swift.Error {
         case helperNotInBundle
         case plistNotInBundle
@@ -16,6 +16,7 @@ actor DaemonManager {
     }
 
     private let fileManager = FileManager.default
+    @Published var isRunning: Bool = false
 
     private var appSupportDir: URL {
         fileManager.homeDirectoryForCurrentUser.appendingPathComponent("Library/Application Support/SortaApp", isDirectory: true)
@@ -32,7 +33,7 @@ actor DaemonManager {
 
     private let label = "com.maxprudhomme.sortadaemon"
 
-    func isRunning() async -> Bool {
+    func checkDaemonStatus() async -> Bool {
         let uid = getuid()
         let result = await runProcess("/bin/launchctl", args: ["print", "gui/\(uid)/\(label)"])
         return result.exitCode == 0
@@ -102,6 +103,8 @@ actor DaemonManager {
             guard bootstrap.exitCode == 0 else { throw Error.launchCtlFailed(cmd: "bootstrap", code: bootstrap.exitCode, stderr: bootstrap.stderr) }
             
             print("✅ Daemon installed and started successfully.")
+            
+            self.isRunning = await checkDaemonStatus()
         } catch {
             throw Error.fileOpFailed(underlying: error)
         }
