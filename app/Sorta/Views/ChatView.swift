@@ -53,7 +53,6 @@ struct ChatView: View {
             }
             .padding()
         }
-        .navigationTitle("LLM Chat")
          // Optional: Display error as an alert
         .alert(item: $vm.errorMessage) { errorMessage in
             Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))

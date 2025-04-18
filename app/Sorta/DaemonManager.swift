@@ -16,6 +16,8 @@ actor DaemonManager: ObservableObject {
     }
 
     private let fileManager = FileManager.default
+    private let label = "com.maxprudhomme.sortadaemon"
+
     @Published var isRunning: Bool = false
 
     private var appSupportDir: URL {
@@ -31,8 +33,6 @@ actor DaemonManager: ObservableObject {
         launchAgentsDir.appendingPathComponent("com.maxprudhomme.sortadaemon.plist")
     }
 
-    private let label = "com.maxprudhomme.sortadaemon"
-
     func checkDaemonStatus() async -> Bool {
         let uid = getuid()
         let result = await runProcess("/bin/launchctl", args: ["print", "gui/\(uid)/\(label)"])
@@ -44,19 +44,19 @@ actor DaemonManager: ObservableObject {
             // Create the directories for the App Support and Launch Agents
             try fileManager.createDirectory(at: appSupportDir, withIntermediateDirectories: true, attributes: nil)
             try fileManager.createDirectory(at: launchAgentsDir, withIntermediateDirectories: true, attributes: nil)
-
+            
             print("✅ Directories created successfully.")
             
             // Check if llama.framework exists
             await checkIfFrameworkExists()
-
+            
             print("✅ Framework check passed.")
             
             let helperSrc = Bundle.main.bundleURL
                 .appendingPathComponent("Contents")
                 .appendingPathComponent("MacOS")
                 .appendingPathComponent("SortaDaemon.app")
-
+            
             guard fileManager.fileExists(atPath: helperSrc.path) else {
                 throw Error.helperNotInBundle
             }
@@ -71,11 +71,11 @@ actor DaemonManager: ObservableObject {
             
             try fileManager.copyItem(at: helperSrc, to: installedHelper)
             try fileManager.setAttributes([.posixPermissions: 0o755], ofItemAtPath: installedHelper.path)
-
+            
             print("✅ Helper copied and permissions set.")
             
             let daemonExecutableInsideBundle = installedHelper.appendingPathComponent("Contents/MacOS/SortaDaemon", isDirectory: false) // Use your executable name
-
+            
             let plistContents: [String: Any] = [
                 "Label": label,
                 "ProgramArguments": [daemonExecutableInsideBundle.path], // **DIRECTLY execute the binary inside the bundle**
@@ -86,10 +86,10 @@ actor DaemonManager: ObservableObject {
                 "StandardErrorPath": "/tmp/sorta-daemon.err",
                 "MachServices": [label: true]
             ]
-
-
+            
+            
             let plistData = try PropertyListSerialization.data(fromPropertyList: plistContents, format: .xml, options: 0)
-
+            
             if fileManager.fileExists(atPath: installedPlist.path) {
                 try fileManager.removeItem(at: installedPlist)
             }
@@ -97,16 +97,12 @@ actor DaemonManager: ObservableObject {
             print("✅ Removed existing plist if any.")
             
             try plistData.write(to: installedPlist)
-
+            
             let uid = getuid()
             let bootstrap = await runProcess("/bin/launchctl", args: ["bootstrap", "gui/\(uid)", installedPlist.path])
             guard bootstrap.exitCode == 0 else { throw Error.launchCtlFailed(cmd: "bootstrap", code: bootstrap.exitCode, stderr: bootstrap.stderr) }
             
             print("✅ Daemon installed and started successfully.")
-            
-            self.isRunning = await checkDaemonStatus()
-        } catch {
-            throw Error.fileOpFailed(underlying: error)
         }
     }
 

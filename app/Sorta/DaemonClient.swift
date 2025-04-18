@@ -21,10 +21,6 @@ class DaemonClient: ObservableObject {
     private let serviceName = "com.maxprudhomme.sortadaemon"
 
     init() {}
-    
-    deinit {
-        connection?.invalidate()
-    }
 
     func connect() {
         connectionState = .connecting
