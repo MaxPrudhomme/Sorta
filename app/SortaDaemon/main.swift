@@ -30,7 +30,6 @@ class HelperDelegate: NSObject, NSXPCListenerDelegate, XPCProtocol {
                 reply(nil, error)
             }
         }
-        reply("This is a test response", nil)
     }
 }
 

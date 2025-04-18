@@ -14,6 +14,8 @@ class Model {
     private var modelPath: String = Model.findModel() ?? ""
     private let logger = Logger(subsystem: "com.maxprudhomme.sortadaemon", category: "Model")
 
+    private var history: [Chat] = []
+    private var historyLimit: Int = 10
     
     init(model: String? = nil) {
         logger.info("Initializing Model")
@@ -25,15 +27,25 @@ class Model {
     func generateResponse(to prompt: String, system: String) async throws -> String {
         if modelPath.isEmpty { throw ModelError.modelNotFound }
         
-        llm = LLM(from: URL(fileURLWithPath: modelPath), template: .chatML(system), maxTokenCount: 4096)
+        if llm == nil {
+            llm = LLM(from: URL(fileURLWithPath: modelPath), template: .chatML(system), maxTokenCount: 512)
+        }
         
         guard let llm = llm else { throw ModelError.modelNotInit }
 
-        let processed = llm.preprocess(prompt, [])
+        history.append((role: .user, content: prompt))
+        
+        let processed = llm.preprocess(prompt, history)
         let response = await llm.getCompletion(from: processed)
         
         if response.isEmpty {
             throw ModelError.generationError
+        }
+        
+        history.append((role: .bot, content: response))
+        
+        if historyLimit * 2 < history.count {
+            history.removeFirst(2)
         }
         
         return response
@@ -44,6 +56,7 @@ class Model {
         let modelDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
         
         let modelOptions = [
+            "mistral-7b-instruct-v0.3-q4_k_m.gguf",
             "mistral-7b-instruct-v0.3-q8_0.gguf",
             "llama-3.2-3b-q8_0.gguf"
         ]
