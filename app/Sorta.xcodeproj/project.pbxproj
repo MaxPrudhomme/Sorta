@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		ABA37AEB2DB278F20074D93F /* SortaDaemon.app in Daemon Wrap */ = {isa = PBXBuildFile; fileRef = ABA37AD22DB276B20074D93F /* SortaDaemon.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		ABDB59D52DB1CBFE00DE46F4 /* llama.framework in llama.framework Copy */ = {isa = PBXBuildFile; fileRef = AB08F1172DB1B7E90070C1ED /* llama.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ABA37B2C2DB2E9DF0074D93F /* LLM in Frameworks */ = {isa = PBXBuildFile; productRef = ABA37B2B2DB2E9DF0074D93F /* LLM */; };
+		ABA37B302DB2EA350074D93F /* llama.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB08F1172DB1B7E90070C1ED /* llama.framework */; };
+		ABA37B312DB2EA350074D93F /* llama.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AB08F1172DB1B7E90070C1ED /* llama.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,15 +42,15 @@
 			name = "Daemon Wrap";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		ABDB59D42DB1CBF000DE46F4 /* llama.framework Copy */ = {
+		ABA37B322DB2EA350074D93F /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				ABDB59D52DB1CBFE00DE46F4 /* llama.framework in llama.framework Copy */,
+				ABA37B312DB2EA350074D93F /* llama.framework in Embed Frameworks */,
 			);
-			name = "llama.framework Copy";
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -62,14 +64,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		AB0D77FB2DB197B400B28181 /* Exceptions for "Models" folder in "Sorta" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"llama-3.2-3b-q8_0.gguf",
-				"mistral-7b-instruct-v0.3-q8_0.gguf",
-			);
-			target = ABC439682DADA8C8006674AA /* Sorta */;
-		};
 		ABA37AE72DB276F40074D93F /* Exceptions for "Shared" folder in "SortaDaemon" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -80,14 +74,6 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		AB0D77F62DB18F1D00B28181 /* Models */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				AB0D77FB2DB197B400B28181 /* Exceptions for "Models" folder in "Sorta" target */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		AB3F1E5A2DB167A900746ECB /* Shared */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -123,6 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABA37B2C2DB2E9DF0074D93F /* LLM in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,6 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABA37B302DB2EA350074D93F /* llama.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,7 +149,6 @@
 			isa = PBXGroup;
 			children = (
 				AB08F1172DB1B7E90070C1ED /* llama.framework */,
-				AB0D77F62DB18F1D00B28181 /* Models */,
 				AB3F1E5A2DB167A900746ECB /* Shared */,
 				ABC4396B2DADA8C8006674AA /* Sorta */,
 				ABC4397C2DADA8C9006674AA /* SortaTests */,
@@ -203,6 +190,7 @@
 			);
 			name = SortaDaemon;
 			packageProductDependencies = (
+				ABA37B2B2DB2E9DF0074D93F /* LLM */,
 			);
 			productName = SortaDaemon;
 			productReference = ABA37AD22DB276B20074D93F /* SortaDaemon.app */;
@@ -216,14 +204,13 @@
 				ABC439662DADA8C8006674AA /* Frameworks */,
 				ABC439672DADA8C8006674AA /* Resources */,
 				ABA37AEA2DB278DE0074D93F /* Daemon Wrap */,
-				ABDB59D42DB1CBF000DE46F4 /* llama.framework Copy */,
+				ABA37B322DB2EA350074D93F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				AB0D77F62DB18F1D00B28181 /* Models */,
 				AB3F1E5A2DB167A900746ECB /* Shared */,
 				ABC4396B2DADA8C8006674AA /* Sorta */,
 			);
@@ -419,6 +406,10 @@
 				DEVELOPMENT_TEAM = 74BX245RVN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -446,6 +437,10 @@
 				DEVELOPMENT_TEAM = 74BX245RVN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -773,6 +768,14 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		ABA37B2B2DB2E9DF0074D93F /* LLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AB08F1112DB1AE2C0070C1ED /* XCRemoteSwiftPackageReference "LLM" */;
+			productName = LLM;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = ABC439612DADA8C8006674AA /* Project object */;
 }

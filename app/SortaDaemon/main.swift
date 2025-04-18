@@ -8,7 +8,7 @@
 import Foundation
 
 class HelperDelegate: NSObject, NSXPCListenerDelegate, XPCProtocol {
-//    private let model = Model()
+    private let model = Model()
     
     func listener(_ listener: NSXPCListener, shouldAcceptNewConnection conn: NSXPCConnection) -> Bool {
         conn.exportedInterface = NSXPCInterface(with: XPCProtocol.self)
@@ -22,14 +22,14 @@ class HelperDelegate: NSObject, NSXPCListenerDelegate, XPCProtocol {
     }
     
     func generateResponse(prompt: String, withReply reply: @escaping (String?, Error?) -> Void) {
-//        Task {
-//            do {
-//                let response = try await model.generateResponse(to: prompt, system: "You are a helpful assistant that answer truthfully and accurately to user queries.")
-//                reply(response, nil)
-//            } catch {
-//                reply(nil, error)
-//            }
-//        }
+        Task {
+            do {
+                let response = try await model.generateResponse(to: prompt, system: "You are a helpful assistant that answer truthfully and accurately to user queries.")
+                reply(response, nil)
+            } catch {
+                reply(nil, error)
+            }
+        }
         reply("This is a test response", nil)
     }
 }
