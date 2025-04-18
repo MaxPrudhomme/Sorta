@@ -77,14 +77,6 @@
 			);
 			target = ABA37AD12DB276B20074D93F /* SortaDaemon */;
 		};
-		ABA37AE92DB277CF0074D93F /* Exceptions for "SortaDaemon" folder in "SortaDaemon" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				main.swift,
-				Model.swift,
-			);
-			target = ABA37AD12DB276B20074D93F /* SortaDaemon */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -106,9 +98,6 @@
 		};
 		ABA37AD32DB276B20074D93F /* SortaDaemon */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				ABA37AE92DB277CF0074D93F /* Exceptions for "SortaDaemon" folder in "SortaDaemon" target */,
-			);
 			path = SortaDaemon;
 			sourceTree = "<group>";
 		};

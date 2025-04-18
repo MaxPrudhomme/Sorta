@@ -5,24 +5,37 @@
 //  Created by Max PRUDHOMME on 17/04/2025.
 //
 
-
 import Foundation
 
 class DaemonClient: ObservableObject {
-    private let connection: NSXPCConnection
-
-    init() {
-        connection = NSXPCConnection(machServiceName: "com.maxprudhomme.sortadaemon", options: [])
-        connection.remoteObjectInterface = NSXPCInterface(with: XPCProtocol.self)
-        connection.resume()
+    enum ConnectionState {
+        case disconnected
+        case connecting
+        case connected
+        case error(Swift.Error)
     }
 
+    @Published var connectionState: ConnectionState = .disconnected
+    
+    private var connection: NSXPCConnection?
+    private let serviceName = "com.maxprudhomme.sortadaemon"
+
+    init() {}
+    
     deinit {
-        connection.invalidate()
+        connection?.invalidate()
     }
 
+    func connect() {
+        connectionState = .connecting
+        connection = NSXPCConnection(machServiceName: serviceName, options: [])
+        connection?.remoteObjectInterface = NSXPCInterface(with: XPCProtocol.self)
+        connection?.resume()
+        connectionState = .connected
+    }
+    
     func ping(withReply reply: @escaping (String) -> Void) {
-        let proxy = connection.remoteObjectProxyWithErrorHandler { error in print("XPC error:", error) } as? XPCProtocol
+        let proxy = connection?.remoteObjectProxyWithErrorHandler { error in print("XPC error:", error) } as? XPCProtocol
 
         proxy?.ping { result in
             reply(result)
@@ -30,7 +43,7 @@ class DaemonClient: ObservableObject {
     }
     
     func generateResponse(prompt: String, withReply reply: @escaping (String?, Error?) -> Void) {
-        let proxy = connection.remoteObjectProxyWithErrorHandler { error in
+        let proxy = connection?.remoteObjectProxyWithErrorHandler { error in
             print("XPC error:", error)
             reply(nil, error)
         } as? XPCProtocol

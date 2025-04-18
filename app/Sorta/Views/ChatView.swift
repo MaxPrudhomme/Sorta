@@ -71,6 +71,7 @@ class ChatViewModel: ObservableObject {
 
     init(client: DaemonClient) {
         self.client = client
+        self.client.connect()
     }
 
     func sendMessage() {

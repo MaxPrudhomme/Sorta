@@ -73,15 +73,19 @@ actor DaemonManager {
 
             print("✅ Helper copied and permissions set.")
             
+            let daemonExecutableInsideBundle = installedHelper.appendingPathComponent("Contents/MacOS/SortaDaemon", isDirectory: false) // Use your executable name
+
             let plistContents: [String: Any] = [
                 "Label": label,
-                "ProgramArguments": [installedHelper.path],
+                "ProgramArguments": [daemonExecutableInsideBundle.path], // **DIRECTLY execute the binary inside the bundle**
+                // Remove the LSBackgroundOnly key from here, it belongs in the Daemon App's Info.plist
                 "RunAtLoad": true,
-                "KeepAlive": true,
+                "KeepAlive": false, // Keep false for now for easier debugging of startup
                 "StandardOutPath": "/tmp/sorta-daemon.log",
                 "StandardErrorPath": "/tmp/sorta-daemon.err",
-                "MachServices": ["com.maxprudhomme.sortadaemon": true]
+                "MachServices": [label: true]
             ]
+
 
             let plistData = try PropertyListSerialization.data(fromPropertyList: plistContents, format: .xml, options: 0)
 
@@ -93,9 +97,9 @@ actor DaemonManager {
             
             try plistData.write(to: installedPlist)
 
-//            let uid = getuid()
-//            let bootstrap = await runProcess("/bin/launchctl", args: ["bootstrap", "gui/\(uid)", installedPlist.path])
-//            guard bootstrap.exitCode == 0 else { throw Error.launchCtlFailed(cmd: "bootstrap", code: bootstrap.exitCode, stderr: bootstrap.stderr) }
+            let uid = getuid()
+            let bootstrap = await runProcess("/bin/launchctl", args: ["bootstrap", "gui/\(uid)", installedPlist.path])
+            guard bootstrap.exitCode == 0 else { throw Error.launchCtlFailed(cmd: "bootstrap", code: bootstrap.exitCode, stderr: bootstrap.stderr) }
             
             print("✅ Daemon installed and started successfully.")
         } catch {
