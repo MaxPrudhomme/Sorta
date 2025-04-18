@@ -15,8 +15,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AB25C9EC2DB165ED00AD16A3"
-               BuildableName = "SortaDaemon"
+               BlueprintIdentifier = "ABA37AD12DB276B20074D93F"
+               BuildableName = "SortaDaemon.app"
                BlueprintName = "SortaDaemon"
                ReferencedContainer = "container:Sorta.xcodeproj">
             </BuildableReference>

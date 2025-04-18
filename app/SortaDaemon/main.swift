@@ -34,9 +34,9 @@ class HelperDelegate: NSObject, NSXPCListenerDelegate, XPCProtocol {
     }
 }
 
-let listener = NSXPCListener(machServiceName: "com.maxprudhomme.sortadaemon")
-let delegate = HelperDelegate()
-listener.delegate = delegate
-listener.resume()
-
-RunLoop.main.run()
+//let listener = NSXPCListener(machServiceName: "com.maxprudhomme.sortadaemon")
+//let delegate = HelperDelegate()
+//listener.delegate = delegate
+//listener.resume()
+//
+//RunLoop.main.run()
