@@ -11,4 +11,10 @@ import Foundation
 
     func ping(withReply reply: @escaping (String) -> Void)
     func generateResponse(prompt: String, withReply reply: @escaping (String?, Error?) -> Void)
+    func generateResponseStreaming(prompt: String, clientEndpoint: NSXPCListenerEndpoint)
+}
+
+@objc public protocol ClientProtocol {
+    func receiveChunk(_ chunk: String)
+    func receiveCompletion(errorData: Data?)
 }

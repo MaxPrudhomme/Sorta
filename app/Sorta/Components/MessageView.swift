@@ -39,7 +39,7 @@ extension String: @retroactive Identifiable {
 struct Message: Identifiable {
     let id = UUID()
     let sender: Sender
-    let content: String
+    var content: String
 }
 
 enum Sender {

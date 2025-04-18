@@ -41,7 +41,7 @@ struct ChatView: View {
                     ProgressView()
                 } else {
                     Button {
-                        vm.sendMessage()
+                        vm.streamMessage()
                     } label: {
                         Image(systemName: "arrow.up.circle.fill")
                             .resizable()
@@ -70,6 +70,9 @@ class ChatViewModel: ObservableObject {
     @Published var isGeneratingResponse: Bool = false
     @Published var errorMessage: String? = nil
 
+    private var currentAssistantMessageId: UUID? = nil
+    private let stopSequence = "<|im_end|>"
+    
     init(client: DaemonClient) {
         self.client = client
     }
@@ -129,5 +132,66 @@ class ChatViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    func streamMessage() {
+        let trimmedInput = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedInput.isEmpty else { return }
+
+        let userMessage = Message(sender: .user, content: trimmedInput)
+        messages.append(userMessage)
+        inputText = ""
+
+        isGeneratingResponse = true
+
+        let assistantMessage = Message(sender: .assistant, content: "...")
+        messages.append(assistantMessage)
+        currentAssistantMessageId = assistantMessage.id
+        var firstChunkReceived = false
+
+        client.generateResponseStreaming(
+            prompt: trimmedInput,
+            chunkHandler: { [weak self] chunk in
+                guard let self = self,
+                    let id = self.currentAssistantMessageId
+                else { return }
+
+                if let index = self.messages.firstIndex(where: { $0.id == id })
+                {
+                    if !firstChunkReceived {
+                        self.messages[index].content = ""
+                        firstChunkReceived = true
+                    }
+                    self.messages[index].content += chunk
+                } else {
+                    print("ViewModel Error: Could not find assistant message with ID \(id) to append chunk.")
+                }
+            },
+            completionHandler: { [weak self] error in
+                guard let self = self else { return }
+
+                print("ViewModel: Streaming completed.")
+                self.isGeneratingResponse = false
+
+                if let error = error {
+                    print("ViewModel Error: Streaming failed: \(error.localizedDescription)")
+                    if let id = self.currentAssistantMessageId,
+                        let index = self.messages.firstIndex(where: {
+                            $0.id == id
+                        })
+                    {
+                        self.messages[index].content = "Error: \(error.localizedDescription)"
+                    } else {
+                        let errorMessage = Message(sender: .assistant, content: "Error: \(error.localizedDescription)")
+                        self.messages.append(errorMessage)
+                    }
+                } else {
+                    if let id = self.currentAssistantMessageId, let index = self.messages.firstIndex(where: {$0.id == id}), self.messages[index].content.isEmpty {
+                        self.messages[index].content = "(No response)"
+                    }
+                }
+                self.currentAssistantMessageId = nil
+            }
+        )
     }
 }
