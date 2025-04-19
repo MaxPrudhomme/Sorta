@@ -37,9 +37,8 @@ class HelperDelegate: NSObject, NSXPCListenerDelegate, XPCProtocol {
     func generateResponseStreaming(prompt: String, clientEndpoint: NSXPCListenerEndpoint) {
         let clientConnection = NSXPCConnection(listenerEndpoint: clientEndpoint)
         clientConnection.remoteObjectInterface = NSXPCInterface(with: ClientProtocol.self)
-        clientConnection.invalidationHandler = { [weak clientConnection] in self.logger.info("Connection back to client invalidated.") }
-        clientConnection.invalidationHandler = { [weak clientConnection] in self.logger.info("Connection back to client invalidated.") }
-        clientConnection.interruptionHandler = { [weak clientConnection] in self.logger.warning("Connection back to client interrupted.") }
+        clientConnection.invalidationHandler = { [weak clientConnection] in clientConnection?.invalidate() }
+        clientConnection.interruptionHandler = { [weak clientConnection] in clientConnection?.invalidate() }
         clientConnection.resume()
         
         guard let clientProxy = clientConnection.remoteObjectProxyWithErrorHandler({ error in

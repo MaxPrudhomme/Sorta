@@ -54,11 +54,9 @@ class Model {
     func generateResponseStream(to prompt: String, system: String, chunkHandler: @escaping (String) -> Void, completionHandler: @escaping (Error?) -> Void) async {
         do {
             if modelPath.isEmpty { throw ModelError.modelNotFound }
-            logger.info("Model path found: \(self.modelPath, privacy: .public)")
 
             if llm == nil {
-                llm = LLM(from: URL(fileURLWithPath: modelPath), template: .chatML(system), maxTokenCount: 512)
-                logger.info("LLM initialized with template: chatML(system)")
+                llm = LLM(from: URL(fileURLWithPath: modelPath), template: .chatML(system), maxTokenCount: 8192)
             }
             
             guard let llm = llm else {
@@ -68,28 +66,19 @@ class Model {
 
             let processed = llm.preprocess(prompt, history)
             
-            logger.info("Beginning streaming response")
             await llm.respond(to: processed) { stream in
                 var fullResponse = ""
-                var streamError: Error? = nil
+                let streamError: Error? = nil
 
-                do {
-                    for try await chunk in stream {
+                for await chunk in stream {
                     chunkHandler(chunk)
-                        self.logger.debug("Received chunk: \(chunk, privacy: .public)")
                     fullResponse += chunk
-                    }
-                } catch {
-                    streamError = error
                 }
 
-                if streamError == nil {
-                    self.history.append(userChat)
-                    self.history.append((role: .bot, content: fullResponse))
-                    self.trimHistory()
-                }
+                self.history.append(userChat)
+                self.history.append((role: .bot, content: fullResponse))
+                self.trimHistory()
 
-                self.logger.info("Streaming response complete. Error: \(String(describing: streamError), privacy: .public)")
                 completionHandler(streamError)
                 return fullResponse
             }
@@ -113,9 +102,9 @@ class Model {
         let modelDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
         
         let modelOptions = [
+            "deepseek-r1-distill-qwen-7b-q4_0.gguf",
             "mistral-7b-instruct-v0.3-q4_k_m.gguf",
             "mistral-7b-instruct-v0.3-q8_0.gguf",
-            "llama-3.2-3b-q8_0.gguf"
         ]
 
         for modelName in modelOptions {
