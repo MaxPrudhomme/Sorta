@@ -23,17 +23,6 @@ class HelperDelegate: NSObject, NSXPCListenerDelegate, XPCProtocol {
         reply("Pong")
     }
     
-    func generateResponse(prompt: String, withReply reply: @escaping (String?, Error?) -> Void) {
-        Task {
-            do {
-                let response = try await model.generateResponse(to: prompt, system: "You are a helpful assistant that answer truthfully and accurately to user queries.")
-                reply(response, nil)
-            } catch {
-                reply(nil, error)
-            }
-        }
-    }
-    
     func generateResponseStreaming(prompt: String, clientEndpoint: NSXPCListenerEndpoint) {
         let clientConnection = NSXPCConnection(listenerEndpoint: clientEndpoint)
         clientConnection.remoteObjectInterface = NSXPCInterface(with: ClientProtocol.self)

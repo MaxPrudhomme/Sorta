@@ -50,20 +50,6 @@ class DaemonClient: ObservableObject {
             reply(result)
         }
     }
-    
-    func generateResponse(prompt: String, withReply reply: @escaping (String?, Error?) -> Void) {
-        let proxy = connection?.remoteObjectProxyWithErrorHandler { error in
-            print("XPC error:", error)
-            reply(nil, error)
-        } as? XPCProtocol
-
-        guard let daemonProxy = proxy else {
-            reply(nil, NSError(domain: "com.maxprudhomme.sortadaemon.client", code: -1, userInfo: [NSLocalizedDescriptionKey: "Could not get XPC proxy."]))
-            return
-        }
-
-        daemonProxy.generateResponse(prompt: prompt, withReply: reply)
-    }
 
     func generateResponseStreaming(prompt: String, chunkHandler: @escaping (String) -> Void, completionHandler: @escaping (Error?) -> Void) {
         activeListener?.invalidate()

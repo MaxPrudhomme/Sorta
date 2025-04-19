@@ -23,33 +23,6 @@ class Model {
             self.modelPath = model
         }
     }
-
-    func generateResponse(to prompt: String, system: String) async throws -> String {
-        if modelPath.isEmpty { throw ModelError.modelNotFound }
-        
-        if llm == nil {
-            llm = LLM(from: URL(fileURLWithPath: modelPath), template: .chatML(system), maxTokenCount: 512)
-        }
-        
-        guard let llm = llm else { throw ModelError.modelNotInit }
-
-        history.append((role: .user, content: prompt))
-        
-        let processed = llm.preprocess(prompt, history)
-        let response = await llm.getCompletion(from: processed)
-        
-        if response.isEmpty {
-            throw ModelError.generationError
-        }
-        
-        history.append((role: .bot, content: response))
-        
-        if historyLimit * 2 < history.count {
-            history.removeFirst(2)
-        }
-        
-        return response
-    }
     
     func generateResponseStream(to prompt: String, system: String, chunkHandler: @escaping (String) -> Void, completionHandler: @escaping (Error?) -> Void) async {
         do {
