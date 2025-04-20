@@ -55,17 +55,11 @@ class DaemonClient: ObservableObject {
         activeListener?.invalidate()
         activeListener = nil
         activeListenerDelegate = nil
-        print("DaemonClient: Preparing for new streaming request.")
-
+        
         guard let connection = connection else {
-            print("DaemonClient: Streaming failed - Not connected.")
             DispatchQueue.main.async {
                 completionHandler(
-                    NSError(
-                        domain: "DaemonClient",
-                        code: -1,
-                        userInfo: [NSLocalizedDescriptionKey: "Not connected"]
-                    )
+                    NSError(domain: "DaemonClient", code: -1, userInfo: [NSLocalizedDescriptionKey: "Not connected"])
                 )
             }
             return
@@ -80,11 +74,7 @@ class DaemonClient: ObservableObject {
             print("DaemonClient: Streaming failed - Could not get proxy.")
             DispatchQueue.main.async {
                 completionHandler(
-                    NSError(
-                        domain: "DaemonClient",
-                        code: -2,
-                        userInfo: [NSLocalizedDescriptionKey: "Proxy failed"]
-                    )
+                    NSError(domain: "DaemonClient", code: -2, userInfo: [NSLocalizedDescriptionKey: "Proxy failed"])
                 )
             }
             return
@@ -93,11 +83,7 @@ class DaemonClient: ObservableObject {
         let listener = NSXPCListener.anonymous()
         self.activeListener = listener
 
-        let delegate = ClientListenerDelegate(
-            listener: listener,
-            chunkHandler: chunkHandler,
-            completionHandler: completionHandler
-        )
+        let delegate = ClientListenerDelegate(listener: listener, chunkHandler: chunkHandler, completionHandler: completionHandler)
         listener.delegate = delegate
         self.activeListenerDelegate = delegate
 
@@ -107,10 +93,7 @@ class DaemonClient: ObservableObject {
         let endpoint = listener.endpoint
 
         print("DaemonClient: Calling generateResponseStreaming with endpoint...")
-        daemonProxy.generateResponseStreaming(
-            prompt: prompt,
-            clientEndpoint: endpoint
-        )
+        daemonProxy.generateResponseStreaming(prompt: prompt, clientEndpoint: endpoint)
     }
 }
 
@@ -145,29 +128,25 @@ private class ClientListenerDelegate: NSObject, NSXPCListenerDelegate, ClientPro
     func receiveCompletion(errorData: Data?) {
         print("ClientListenerDelegate: Received completion.")
         var finalError: Error? = nil
-        if errorData != nil {
+        if let data = errorData {
             print("ClientListenerDelegate: Attempting to unarchive error...")
-            if let data = errorData {
-                print("ClientListenerDelegate: Attempting to unarchive error...")
-                do {
-                    let allowedClasses = [NSError.self, NSDictionary.self, NSString.self, NSNumber.self, NSArray.self, NSValue.self]
-                    
-                    if let unarchivedError = try NSKeyedUnarchiver.unarchivedObject(ofClasses: allowedClasses, from: data) as? Error {
-                        finalError = unarchivedError
-                        print("ClientListenerDelegate: Unarchived error: \(finalError!)")
-                    } else {
-                        print("ClientListenerDelegate: Failed to cast unarchived data to Error after unarchiving.")
-                        finalError = NSError(domain: "ClientError", code: -3, userInfo: [NSLocalizedDescriptionKey:"Failed to decode error object from daemon"])
-                    }
-                } catch {
-                    print("ClientListenerDelegate: Error during unarchiving: \(error)")
-                    finalError = error
+            do {
+                let allowedClasses = [NSError.self, NSDictionary.self, NSString.self, NSNumber.self, NSArray.self, NSValue.self]
+                if let unarchivedError = try NSKeyedUnarchiver.unarchivedObject(ofClasses: allowedClasses, from: data) as? Error {
+                    finalError = unarchivedError
+                    print("ClientListenerDelegate: Unarchived error: \(finalError!)")
+                } else {
+                    print("ClientListenerDelegate: Failed to cast unarchived data to Error after unarchiving.")
+                    finalError = NSError(domain: "ClientError", code: -3, userInfo: [NSLocalizedDescriptionKey:"Failed to decode error object from daemon"])
                 }
-            } else {
-                print("ClientListenerDelegate: Completion received with no error data (Success).")
+            } catch {
+                print("ClientListenerDelegate: Error during unarchiving: \(error)")
+                finalError = error
             }
-            handleCompletionWithError(finalError)
+        } else {
+            print("ClientListenerDelegate: Completion received with no error data (Success).")
         }
+        handleCompletionWithError(finalError)
     }
 
     func handleCompletionWithError(_ error: Error?) {

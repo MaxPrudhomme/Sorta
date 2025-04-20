@@ -41,16 +41,10 @@ actor DaemonManager: ObservableObject {
 
     func installAndStart() async throws {
         do {
-            // Create the directories for the App Support and Launch Agents
             try fileManager.createDirectory(at: appSupportDir, withIntermediateDirectories: true, attributes: nil)
             try fileManager.createDirectory(at: launchAgentsDir, withIntermediateDirectories: true, attributes: nil)
             
-            print("✅ Directories created successfully.")
-            
-            // Check if llama.framework exists
             await checkIfFrameworkExists()
-            
-            print("✅ Framework check passed.")
             
             let helperSrc = Bundle.main.bundleURL
                 .appendingPathComponent("Contents")
@@ -61,25 +55,18 @@ actor DaemonManager: ObservableObject {
                 throw Error.helperNotInBundle
             }
             
-            print("✅ Helper source found at: \(helperSrc.path)")
-            
             if fileManager.fileExists(atPath: installedHelper.path) {
                 try fileManager.removeItem(at: installedHelper)
             }
-            
-            print("✅ Removed existing helper if any.")
-            
+
             try fileManager.copyItem(at: helperSrc, to: installedHelper)
             try fileManager.setAttributes([.posixPermissions: 0o755], ofItemAtPath: installedHelper.path)
-            
-            print("✅ Helper copied and permissions set.")
             
             let daemonExecutableInsideBundle = installedHelper.appendingPathComponent("Contents/MacOS/SortaDaemon", isDirectory: false) // Use your executable name
             
             let plistContents: [String: Any] = [
                 "Label": label,
-                "ProgramArguments": [daemonExecutableInsideBundle.path], // **DIRECTLY execute the binary inside the bundle**
-                // Remove the LSBackgroundOnly key from here, it belongs in the Daemon App's Info.plist
+                "ProgramArguments": [daemonExecutableInsideBundle.path],
                 "RunAtLoad": true,
                 "KeepAlive": false, // Keep false for now for easier debugging of startup
                 "StandardOutPath": "/tmp/sorta-daemon.log",
@@ -94,15 +81,11 @@ actor DaemonManager: ObservableObject {
                 try fileManager.removeItem(at: installedPlist)
             }
             
-            print("✅ Removed existing plist if any.")
-            
             try plistData.write(to: installedPlist)
             
             let uid = getuid()
             let bootstrap = await runProcess("/bin/launchctl", args: ["bootstrap", "gui/\(uid)", installedPlist.path])
             guard bootstrap.exitCode == 0 else { throw Error.launchCtlFailed(cmd: "bootstrap", code: bootstrap.exitCode, stderr: bootstrap.stderr) }
-            
-            print("✅ Daemon installed and started successfully.")
         }
     }
 
@@ -115,7 +98,6 @@ actor DaemonManager: ObservableObject {
 
             if fileManager.fileExists(atPath: installedPlist.path) { try fileManager.removeItem(at: installedPlist) }
             if fileManager.fileExists(atPath: installedHelper.path) { try fileManager.removeItem(at: installedHelper) }
-            print("✅ Daemon stopped and uninstalled successfully.")
         } catch {
             throw Error.fileOpFailed(underlying: error)
         }
@@ -125,22 +107,15 @@ actor DaemonManager: ObservableObject {
         let frameworkDir = appSupportDir.appendingPathComponent("Frameworks", isDirectory: true)
         let frameworkPath = frameworkDir.appendingPathComponent("llama.framework")
 
-        // Check if the framework exists
         if fileManager.fileExists(atPath: frameworkPath.path) {
-            print("✅ llama.framework exists at: \(frameworkPath.path)")
         } else {
-            print("❌ llama.framework does not exist at: \(frameworkPath.path)")
-
-            // If it doesn't exist, copy the framework to the location
             guard let frameworkSrc = Bundle.main.privateFrameworksURL?.appendingPathComponent("llama.framework") else {
-                print("❌ llama.framework not found in privateFrameworksURL")
                 return
             }
             
             do {
                 try fileManager.createDirectory(at: frameworkDir, withIntermediateDirectories: true, attributes: nil)
                 try fileManager.copyItem(at: frameworkSrc, to: frameworkPath)
-                print("✅ Successfully copied llama.framework to: \(frameworkPath.path)")
             } catch {
                 print("❌ Failed to copy llama.framework: \(error)")
             }

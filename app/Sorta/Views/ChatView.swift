@@ -19,7 +19,7 @@ struct ChatView: View {
                     VStack(alignment: .leading, spacing: 10) {
                         ForEach(vm.messages) { message in
                             MessageView(message: message)
-                                .id(message.id) // Assign ID for scrolling
+                                .id(message.id)
                         }
                     }
                     .padding(.horizontal)
@@ -30,30 +30,8 @@ struct ChatView: View {
                     }
                 }
             }
-
-            // Input area
-            HStack {
-                TextField("Enter message...", text: $vm.inputText)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .disabled(vm.isGeneratingResponse) // Disable input while waiting for response
-
-                if vm.isGeneratingResponse {
-                    ProgressView()
-                } else {
-                    Button {
-                        vm.streamMessage()
-                    } label: {
-                        Image(systemName: "arrow.up.circle.fill")
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .foregroundColor(vm.inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? .gray : .blue)
-                    }
-                    .disabled(vm.inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) // Disable send button for empty input
-                }
-            }
-            .padding()
+            InputView(inputText: $vm.inputText, isGeneratingResponse: vm.isGeneratingResponse, sendAction: { vm.streamMessage() })
         }
-         // Optional: Display error as an alert
         .alert(item: $vm.errorMessage) { errorMessage in
             Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
         }
@@ -91,50 +69,8 @@ class ChatViewModel: ObservableObject {
         }
     }
     
-    func sendMessage() {
-        guard !inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            return
-        }
-
-        let userMessageContent = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
-        let userMessage = Message(sender: .user, content: userMessageContent)
-
-        messages.append(userMessage)
-        inputText = ""
-
-        isGeneratingResponse = true
-        errorMessage = nil // Clear any previous error
-
-        // Call the daemon client
-        client.generateResponse(prompt: userMessageContent) { [weak self] response, error in
-            guard let self = self else { return }
-
-            // Ensure UI updates happen on the main thread
-            DispatchQueue.main.async {
-                self.isGeneratingResponse = false
-
-                if let error = error {
-                    // Handle error
-                    let errorMessageContent = "Error: \(error.localizedDescription)"
-                    let errorMessage = Message(sender: .assistant, content: errorMessageContent)
-                    self.messages.append(errorMessage) // Or handle errors differently, like an alert
-                    self.errorMessage = errorMessageContent // Store error for potential alert
-                    print("Daemon response error: \(error)")
-                } else if let response = response, !response.isEmpty {
-                    // Add assistant's response
-                    let assistantMessage = Message(sender: .assistant, content: response)
-                    self.messages.append(assistantMessage)
-                } else {
-                    // Handle empty response if no error occurred
-                     let noResponseMessage = Message(sender: .assistant, content: "Received empty response from daemon.")
-                     self.messages.append(noResponseMessage)
-                     print("Daemon returned empty response with no error.")
-                }
-            }
-        }
-    }
-    
     func streamMessage() {
+        print("\n \n ChatView : Starting a new stream")
         let trimmedInput = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedInput.isEmpty else { return }
 
@@ -168,29 +104,24 @@ class ChatViewModel: ObservableObject {
                 }
             },
             completionHandler: { [weak self] error in
-                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    print("Completion handler")
+                    self?.isGeneratingResponse = false
 
-                print("ViewModel: Streaming completed.")
-                self.isGeneratingResponse = false
-
-                if let error = error {
-                    print("ViewModel Error: Streaming failed: \(error.localizedDescription)")
-                    if let id = self.currentAssistantMessageId,
-                        let index = self.messages.firstIndex(where: {
-                            $0.id == id
-                        })
-                    {
-                        self.messages[index].content = "Error: \(error.localizedDescription)"
+                    if let error = error {
+                        if let id = self?.currentAssistantMessageId,
+                           let index = self?.messages.firstIndex(where: { $0.id == id }) {
+                            self?.messages[index].content = "Error: \(error.localizedDescription)"
+                        }
                     } else {
-                        let errorMessage = Message(sender: .assistant, content: "Error: \(error.localizedDescription)")
-                        self.messages.append(errorMessage)
+                        if let id = self?.currentAssistantMessageId,
+                           let index = self?.messages.firstIndex(where: { $0.id == id }),
+                           self?.messages[index].content.isEmpty == true {
+                            self?.messages[index].content = "(No response)"
+                        }
                     }
-                } else {
-                    if let id = self.currentAssistantMessageId, let index = self.messages.firstIndex(where: {$0.id == id}), self.messages[index].content.isEmpty {
-                        self.messages[index].content = "(No response)"
-                    }
+                    self?.currentAssistantMessageId = nil
                 }
-                self.currentAssistantMessageId = nil
             }
         )
     }
