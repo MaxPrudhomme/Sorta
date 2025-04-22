@@ -25,10 +25,21 @@ class Model {
             self.modelPath = model
         }
     }
-    
-    func generateResponseStream(to prompt: String, system: String, chunkHandler: @escaping (String) -> Void, completionHandler: @escaping (Error?) -> Void) async {
+
+    func generateResponseStream(to prompt: String, system: String, clientEndpoint: NSXPCListenerEndpoint, completionHandler: @escaping (Error?) -> Void) async {
+        let clientConnection = NSXPCConnection(listenerEndpoint: clientEndpoint)
+        clientConnection.remoteObjectInterface = NSXPCInterface(with: ClientProtocol.self)
+        clientConnection.resume()
+        
+        guard let clientProxy = clientConnection.remoteObjectProxyWithErrorHandler({ error in
+            completionHandler(error)
+            clientConnection.invalidate()
+        }) as? ClientProtocol else {
+            completionHandler(ModelError.connectionFailed)
+            return
+        }
+        
         do {
-            print("Model : Checking model path")
             if modelPath.isEmpty { throw ModelError.modelNotFound }
 
             if llm == nil {
@@ -42,41 +53,32 @@ class Model {
             let userChat: Chat = (role: .user, content: prompt)
 
             let processed = llm.preprocess(prompt, history)
-            
-            print("Model : Starting response stream")
-            await llm.respond(to: processed) { [self] stream in
+            await llm.respond(to: processed) { stream in
                 var fullResponse = ""
-                let streamError: Error? = nil
-
+                
                 for await chunk in stream {
-                    print("Model : Received chunk -> \(chunk)")
-                    chunkHandler(chunk)
+                    clientProxy.receiveChunk(chunk)
                     fullResponse += chunk
                 }
-
+                
+                clientProxy.receiveCompletion(errorData: nil)
+                clientConnection.invalidate()
+                
                 self.history.append(userChat)
-                print("Model : Added user prompt to history")
-                if !fullResponse.hasSuffix(endMarker) {
-                    fullResponse += endMarker
-                }
-                
                 self.history.append((role: .bot, content: fullResponse))
-                print("Model : Added bot response to history")
                 self.trimHistory()
-
-                print("Model : Completed response stream")
-                completionHandler(streamError)
                 
-                print("\n\n")
-                print(history)
+                completionHandler(nil)
                 return fullResponse
             }
-
         } catch {
+            let errorData = try? NSKeyedArchiver.archivedData(withRootObject: error as NSError, requiringSecureCoding: false)
+            clientProxy.receiveCompletion(errorData: errorData)
+            clientConnection.invalidate()
             completionHandler(error)
         }
     }
-
+    
     private func trimHistory() {
         let maxEntries = historyLimit * 2
         if history.count > maxEntries {
@@ -110,5 +112,6 @@ class Model {
         case modelNotFound
         case modelNotInit
         case generationError
+        case connectionFailed
     }
 }

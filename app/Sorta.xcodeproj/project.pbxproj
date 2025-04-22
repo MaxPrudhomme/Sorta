@@ -64,7 +64,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		AB7A95AB2DB4E8680022A965 /* Exceptions for "Sorta" folder in "SortaDaemon" target */ = {
+		AB7A95AC2DB4EDEE0022A965 /* Exceptions for "Shared" folder in "SortaDaemon" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				XPCProtocol.swift,
@@ -76,6 +76,9 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AB3F1E5A2DB167A900746ECB /* Shared */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				AB7A95AC2DB4EDEE0022A965 /* Exceptions for "Shared" folder in "SortaDaemon" target */,
+			);
 			path = Shared;
 			sourceTree = "<group>";
 		};
@@ -86,9 +89,6 @@
 		};
 		ABC4396B2DADA8C8006674AA /* Sorta */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				AB7A95AB2DB4E8680022A965 /* Exceptions for "Sorta" folder in "SortaDaemon" target */,
-			);
 			path = Sorta;
 			sourceTree = "<group>";
 		};

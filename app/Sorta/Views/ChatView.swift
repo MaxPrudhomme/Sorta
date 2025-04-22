@@ -43,6 +43,8 @@ class ChatViewModel: ObservableObject {
     private let client: DaemonClient
     private var state: Bool = false
     
+    private var listener: NSXPCListener?
+    
     @Published var messages: [Message] = []
     @Published var inputText: String = ""
     @Published var isGeneratingResponse: Bool = false
@@ -53,20 +55,6 @@ class ChatViewModel: ObservableObject {
     
     init(client: DaemonClient) {
         self.client = client
-    }
-
-    func checkConnection() {
-        client.connect()
-        client.ping { [weak self] result in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                if result == "pong" {
-                    self.state = true
-                } else {
-                    self.state = false
-                }
-            }
-        }
     }
     
     func streamMessage() {
